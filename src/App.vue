@@ -120,54 +120,145 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100 p-4 font-sans text-gray-800">
-    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+  <div class="min-h-screen bg-slate-950 p-6 font-sans text-white">
+    <div class="mx-auto max-w-md rounded-2xl border border-white/10 bg-slate-900/70 p-6 backdrop-blur">
 
-      <div class="flex justify-between items-center mb-6 border-b pb-4">
-        <h1 class="text-xl font-bold text-indigo-600">ViteMemo</h1>
-        <button v-if="token" @click="logout" class="text-sm text-red-500 hover:underline">ログアウト</button>
+      <!-- Header -->
+      <div class="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+        <h1 class="text-xl font-semibold tracking-tight text-cyan-400">
+          ViteMemo
+        </h1>
+        <button
+          v-if="token"
+          @click="logout"
+          class="text-sm text-white/50 hover:text-red-400 transition"
+        >
+          ログアウト
+        </button>
       </div>
 
+      <!-- Auth -->
       <div v-if="!token">
-        <h2 class="text-lg font-semibold mb-4">{{ view === 'login' ? 'ログイン' : '新規登録' }}</h2>
-        <input v-model="form.email" type="email" placeholder="Email" class="w-full p-2 mb-3 border rounded">
-        <input v-model="form.password" type="password" placeholder="Password" class="w-full p-2 mb-4 border rounded">
+        <h2 class="mb-4 text-lg font-medium text-white/80">
+          {{ view === 'login' ? 'ログイン' : '新規登録' }}
+        </h2>
 
-        <button v-if="view === 'login'" @click="login" class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">ログイン</button>
-        <button v-else @click="register" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">登録する</button>
+        <input
+          v-model="form.email"
+          type="email"
+          placeholder="Email"
+          class="mb-3 w-full rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-cyan-400 focus:outline-none"
+        />
 
-        <p class="mt-4 text-center text-sm text-gray-600 cursor-pointer hover:underline"
-           @click="view = view === 'login' ? 'register' : 'login'">
-           {{ view === 'login' ? 'アカウントをお持ちでない方はこちら' : 'ログインはこちら' }}
+        <input
+          v-model="form.password"
+          type="password"
+          placeholder="Password"
+          class="mb-4 w-full rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-cyan-400 focus:outline-none"
+        />
+
+        <button
+          v-if="view === 'login'"
+          @click="login"
+          class="w-full rounded-md bg-cyan-500/90 py-2 text-sm font-medium text-slate-950 hover:bg-cyan-400 transition"
+        >
+          ログイン
+        </button>
+
+        <button
+          v-else
+          @click="register"
+          class="w-full rounded-md bg-emerald-500/90 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-400 transition"
+        >
+          登録する
+        </button>
+
+        <p
+          class="mt-4 cursor-pointer text-center text-sm text-white/40 hover:text-white/70 transition"
+          @click="view = view === 'login' ? 'register' : 'login'"
+        >
+          {{ view === 'login' ? 'アカウントをお持ちでない方はこちら' : 'ログインはこちら' }}
         </p>
       </div>
 
+      <!-- Memo -->
       <div v-else>
-        <div class="mb-8 bg-gray-50 p-4 rounded-lg">
-          <h3 class="font-bold mb-2 text-sm text-gray-500">{{ editingId ? 'メモを編集' : '新しいメモ' }}</h3>
-          <input v-model="form.title" placeholder="タイトル (任意)" class="w-full p-2 mb-2 border rounded text-sm">
-          <textarea v-model="form.content" placeholder="メモの内容..." class="w-full p-2 mb-2 border rounded h-24 text-sm"></textarea>
+        <!-- Editor -->
+        <div class="mb-8 rounded-xl border border-white/10 bg-slate-950/60 p-4">
+          <h3 class="mb-2 text-xs font-medium uppercase tracking-wide text-white/40">
+            {{ editingId ? 'メモを編集' : '新しいメモ' }}
+          </h3>
+
+          <input
+            v-model="form.title"
+            placeholder="タイトル (任意)"
+            class="mb-2 w-full rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-cyan-400 focus:outline-none"
+          />
+
+          <textarea
+            v-model="form.content"
+            placeholder="メモの内容..."
+            class="mb-3 h-24 w-full resize-none rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-cyan-400 focus:outline-none"
+          />
+
           <div class="flex gap-2">
-            <button @click="saveMemo" class="flex-1 bg-indigo-600 text-white p-2 rounded text-sm hover:bg-indigo-700">
+            <button
+              @click="saveMemo"
+              class="flex-1 rounded-md bg-cyan-500/90 py-2 text-sm font-medium text-slate-950 hover:bg-cyan-400 transition"
+            >
               {{ editingId ? '更新' : '追加' }}
             </button>
-            <button v-if="editingId" @click="editingId = null; form.title=''; form.content=''" class="px-4 py-2 bg-gray-300 rounded text-sm">キャンセル</button>
+
+            <button
+              v-if="editingId"
+              @click="editingId = null; form.title=''; form.content=''"
+              class="rounded-md bg-white/10 px-4 py-2 text-sm text-white/70 hover:bg-white/20 transition"
+            >
+              キャンセル
+            </button>
           </div>
         </div>
 
+        <!-- Memo List -->
         <div class="space-y-4">
-          <div v-for="memo in memos" :key="memo.id" class="border p-4 rounded hover:shadow-sm transition bg-white relative group">
-            <h3 class="font-bold text-lg mb-1">{{ memo.title || '（無題）' }}</h3>
-            <p class="text-gray-700 whitespace-pre-wrap mb-2">{{ memo.content }}</p>
-            <div class="text-xs text-gray-400 flex justify-between items-center">
+          <div
+            v-for="memo in memos"
+            :key="memo.id"
+            class="group relative rounded-xl border border-white/10 bg-slate-900/60 p-4 transition hover:bg-slate-900"
+          >
+            <h3 class="mb-1 text-lg font-medium text-white">
+              {{ memo.title || '（無題）' }}
+            </h3>
+
+            <p class="mb-3 whitespace-pre-wrap text-sm text-white/70">
+              {{ memo.content }}
+            </p>
+
+            <div class="flex items-center justify-between text-xs text-white/40">
               <span>{{ new Date(memo.created_at).toLocaleString() }}</span>
-              <div class="space-x-2">
-                <button @click="startEdit(memo)" class="text-indigo-500 hover:text-indigo-700">編集</button>
-                <button @click="deleteMemo(memo.id)" class="text-red-400 hover:text-red-600">削除</button>
+              <div class="space-x-3 opacity-0 transition group-hover:opacity-100">
+                <button
+                  @click="startEdit(memo)"
+                  class="text-cyan-400 hover:text-cyan-300"
+                >
+                  編集
+                </button>
+                <button
+                  @click="deleteMemo(memo.id)"
+                  class="text-red-400 hover:text-red-300"
+                >
+                  削除
+                </button>
               </div>
             </div>
           </div>
-          <p v-if="memos.length === 0" class="text-center text-gray-400 text-sm">メモがありません</p>
+
+          <p
+            v-if="memos.length === 0"
+            class="text-center text-sm text-white/40"
+          >
+            メモがありません
+          </p>
         </div>
       </div>
 
