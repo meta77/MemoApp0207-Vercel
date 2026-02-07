@@ -107,7 +107,7 @@ onMounted(() => {
     <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
 
       <div class="flex justify-between items-center mb-6 border-b pb-4">
-        <h1 class="text-xl font-bold text-indigo-600">📝 Simple Memo</h1>
+        <h1 class="text-xl font-bold text-indigo-600">ViteMemo</h1>
         <button v-if="token" @click="logout" class="text-sm text-red-500 hover:underline">ログアウト</button>
       </div>
 
