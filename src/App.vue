@@ -67,13 +67,21 @@ const saveMemo = async () => {
   if (!form.value.content) return alert('内容は必須です')
 
   const body = JSON.stringify({ title: form.value.title, content: form.value.content })
+  let res;
 
   if (editingId.value) {
     // 編集
-    await api(`/memos/${editingId.value}`, { method: 'PUT', body })
+    res = await api(`/memos/${editingId.value}`, { method: 'PUT', body })
   } else {
     // 新規
-    await api('/memos', { method: 'POST', body })
+    res = await api('/memos', { method: 'POST', body })
+  }
+
+  // エラーチェックを追加
+  if (!res.ok) {
+    const errorData = await res.json();
+    alert(`エラーが発生しました: ${errorData.error}`);
+    return;
   }
 
   form.value.title = ''
@@ -84,7 +92,16 @@ const saveMemo = async () => {
 
 const deleteMemo = async (id) => {
   if(!confirm('削除しますか？')) return
-  await api(`/memos/${id}`, { method: 'DELETE' })
+
+  const res = await api(`/memos/${id}`, { method: 'DELETE' })
+
+  // エラーチェックを追加
+  if (!res.ok) {
+    const errorData = await res.json();
+    alert(`削除に失敗しました: ${errorData.error}`);
+    return;
+  }
+
   fetchMemos()
 }
 
