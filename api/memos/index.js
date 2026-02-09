@@ -1,7 +1,7 @@
 import { db } from '../db.js';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret-key-change-me';
+const JWT_SECRET = process.env.JWT_SECRET || 'secret-key-change-me'; // 'secret-key-change-me'をそのまま公開しているから危険。
 
 export default async function handler(req, res) {
   // 認証チェック
