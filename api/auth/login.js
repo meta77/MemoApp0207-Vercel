@@ -2,7 +2,13 @@ import { db } from '../db.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret-key-change-me'; // 本番ではVercelの環境変数に設定推奨
+// ✅ 修正後：環境変数がない場合はエラーを投げる（安全策）
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  // 本番環境で設定忘れがあった場合にすぐ気づける
+  console.error("JWT_SECRET is not set!");
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
