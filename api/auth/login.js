@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const { rows } = await db.sql`SELECT * FROM users WHERE email = ${email}`;
     const user = rows[0];
 
-    if (!user || !(await bcrypt.compare(password, user.password_hash))) {
+    if (!user || !(await bcrypt.compare(password, user.password_hash))) { // もし「ユーザーは存在しますが、パスワードが違います」と詳しく教えてしまうと、悪意のある人に「このメールアドレスは登録済みなんだな」というヒントを与えてしまいます（リスト攻撃への対策）。
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
