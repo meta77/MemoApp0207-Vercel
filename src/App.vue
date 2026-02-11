@@ -33,12 +33,6 @@ const register = async () => {
 }
 
 const login = async () => {
-  const login = async () => {
-  console.log("login started")
-  console.log("email:", form.email)
-  console.log("password:", form.password)
-  }
-
   const res = await api('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email: form.value.email, password: form.value.password })
