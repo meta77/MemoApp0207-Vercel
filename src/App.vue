@@ -159,7 +159,7 @@ onMounted(() => {
 
         <button
           v-if="view === 'login'"
-          @click="login"
+          @click="() => { console.log('clicked'); login(); }"
           class="w-full rounded-md bg-zinc-800 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-700 transition"
         >
           ログイン
