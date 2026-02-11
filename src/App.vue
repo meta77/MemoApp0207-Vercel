@@ -33,6 +33,12 @@ const register = async () => {
 }
 
 const login = async () => {
+  const login = async () => {
+  console.log("login started")
+  console.log("email:", form.email)
+  console.log("password:", form.password)
+  }
+
   const res = await api('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email: form.value.email, password: form.value.password })
@@ -159,7 +165,7 @@ onMounted(() => {
 
         <button
           v-if="view === 'login'"
-          @click="() => { console.log('clicked'); login(); }"
+          @click="login"
           class="w-full rounded-md bg-zinc-800 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-700 transition"
         >
           ログイン
